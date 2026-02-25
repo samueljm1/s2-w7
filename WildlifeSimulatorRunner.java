@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.util.Scanner;
+
 
 /**
  * WildlifeSimulatorApp - Main program for the Wildlife Population Simulator
@@ -12,11 +14,27 @@ import java.util.*;
  */
 public class WildlifeSimulatorRunner {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         // Create simulator with capacity for 20 species
-        
+        WildlifeSimulator simulator = new WildlifeSimulator(20);
         
         // Load species data from CSV
+        File speciesFile = new File("species-data.csv");
+        Scanner s = new Scanner(speciesFile);
+        s.nextLine();
+        while(s.hasNextLine()){
+            String line = s.nextLine();
+            String[] pieces = line.split(",");
+            String spName = pieces[0];
+            Long pop = Long.parseLong(pieces[1]);
+            Double br = Double.parseDouble(pieces[2]);
+            Double dr = Double.parseDouble(pieces[3]);
+            Long hc = Long.parseLong(pieces[4]);
+            String location = pieces[5];
+            Species temp = new Species(spName, pop, br, dr, hc, location);  
+            simulator.addSpecies(temp);
+            
+        }
         
         
         System.out.println("\n========================================");
@@ -27,6 +45,7 @@ public class WildlifeSimulatorRunner {
         // Display initial populations
         System.out.println("INITIAL POPULATIONS:");
         System.out.println("------------------");
+        System.out.println(simulator);
         
         
         // Run simulation for 10 years and record data year-by-year
@@ -52,7 +71,7 @@ public class WildlifeSimulatorRunner {
      * CSV format: name,population,birthRate,deathRate,capacity,location
      */
     private static void loadSpeciesFromCSV(WildlifeSimulator simulator, String filename) {
-        //TODO
+  
     }
     
     /**
